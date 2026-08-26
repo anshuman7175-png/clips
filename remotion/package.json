@@ -1,0 +1,19 @@
+{
+  "name": "documentary-assembly",
+  "private": true,
+  "description": "Remotion assembly for the pipeline's EDL (PLAN.md Layer 8). Render: npx remotion render Documentary --props=../runs/<run-id>/remotion_props.json",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Documentary out/assembled.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.5.0"
+  }
+}
