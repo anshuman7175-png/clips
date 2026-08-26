@@ -1,0 +1,10 @@
+# Core (always needed)
+requests>=2.31
+
+# TTS stage only (install on the GPU box, not needed for --skip-tts runs)
+# chatterbox-tts     # primary engine (MIT) - needs torch w/ CUDA
+# kokoro>=0.9        # CPU fallback engine (Apache 2.0)
+# soundfile>=0.12
+# numpy
+
+# Mastering stage requires ffmpeg on PATH (system package, not pip)

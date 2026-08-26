@@ -1,0 +1,16 @@
+{
+  "title": "The Disappearance of the SS Poet (1980)",
+  "contradiction": "The Coast Guard inquiry concluded the ship was likely lost to sudden catastrophic flooding, yet the same record shows the vessel passed inspection 11 days before departure and no distress call was ever received despite functioning radio equipment.",
+  "sources": [
+    {
+      "id": "src1",
+      "citation": "US Coast Guard Marine Casualty Report 16732/0001 HQS 81 (1981)",
+      "text": "The SS Poet, a 522-foot converted C4 cargo vessel, departed Philadelphia on 24 October 1980 carrying 13,500 tons of corn bound for Port Said, Egypt, with a crew of 34. The last communication was a routine private radiotelephone call from the master's son at approximately 0900 on 24 October. No distress signal was received by any station. The vessel had passed a Coast Guard inspection on 13 October 1980. The Marine Board concluded the most probable cause was flooding of the number one hold in heavy weather, progressing too rapidly for the crew to transmit a distress message. No wreckage, debris, or bodies were ever recovered despite a search covering approximately 300,000 square miles."
+    },
+    {
+      "id": "src2",
+      "citation": "House Merchant Marine Subcommittee hearing record (1981)",
+      "text": "Testimony before the subcommittee established that the Poet was not reported overdue to the Coast Guard until 3 November 1980, ten days after the last contact, and the search did not begin until 8 November. Family members testified they had contacted the operating company repeatedly during the intervening days. The subcommittee criticized the reporting delay as having eliminated any realistic chance of rescue. The company stated it had assumed the vessel's radio silence was due to equipment failure, which crew families disputed, noting the ship carried redundant communication equipment."
+    }
+  ]
+}
