@@ -49,6 +49,10 @@ class Config:
     video_match_threshold: float = field(
         default_factory=lambda: float(os.getenv("VIDEO_MATCH_THRESHOLD", "0.18")))
     harvest_limit_per_source: int = 8
+    # Edit engine (PLAN.md Layer 6) - M3
+    edl_candidate_seeds: int = field(
+        default_factory=lambda: int(os.getenv("EDL_CANDIDATE_SEEDS", "12")))
+    align_device: str = field(default_factory=lambda: os.getenv("ALIGN_DEVICE", "cuda"))
 
 
 def load_config(workdir: str | Path = "runs") -> Config:
