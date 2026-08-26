@@ -178,10 +178,12 @@ sustainable fully free**, PROVIDED:
 
 ## Milestones
 
-1. **M1 (this repo, first):** Script engine (three-act spine + validators + claim grounding)
+1. **M1 (this repo, first) — DONE:** Script engine (three-act spine + validators + claim grounding)
    → Voice Director → Chatterbox render → loudnorm master. Tests the riskiest assumption
    (voice quality) end to end.
-2. **M2:** Footage layer — X-CLIP/SigLIP gate, asset harvester, license ledger, Wan 2.2 branch.
+2. **M2 — DONE:** Footage layer — X-CLIP/SigLIP gate, asset harvester, license ledger, Wan 2.2 branch.
+   Implemented in `pipeline/footage/` (`run_milestone2.py` orchestrator; offline gate tests in
+   `scripts/test_m2_synthetic.py`).
 3. **M3:** Edit engine — Rule-of-Six EDL, J/L-cut grammar, WhisperX alignment, Remotion assembly.
 4. **M4:** QC + packaging — aesthetic gates, thumbnails, disclosure, upload.
 5. **M5:** Feedback loop — Analytics API post-mortems feeding the scorers.
