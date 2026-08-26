@@ -39,6 +39,16 @@ class Config:
     words_per_minute: int = 150
     rehook_window_s: tuple[float, float] = (60.0, 90.0)
     max_loop_gap_s: float = 180.0
+    # Footage layer (PLAN.md Layer 4) - M2
+    library_dir: Path = Path("library")           # shared, embed-once asset library
+    embedder: str = field(default_factory=lambda: os.getenv("EMBEDDER", "auto"))
+    # Literal-match thresholds; calibrated per space (SigLIP2/X-CLIP cosine
+    # scales differ). Overridable per-run while tuning against real assets.
+    still_match_threshold: float = field(
+        default_factory=lambda: float(os.getenv("STILL_MATCH_THRESHOLD", "0.22")))
+    video_match_threshold: float = field(
+        default_factory=lambda: float(os.getenv("VIDEO_MATCH_THRESHOLD", "0.18")))
+    harvest_limit_per_source: int = 8
 
 
 def load_config(workdir: str | Path = "runs") -> Config:
