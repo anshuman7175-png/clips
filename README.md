@@ -3,10 +3,22 @@
 Fully-free automated pipeline for long-form mystery/documentary videos.
 **The definitive blueprint is [PLAN.md](PLAN.md)** — every module traces back to it.
 
-## Current status: Milestone 1
+## Current status: all milestones code-complete (M1–M5 + Layer 1 research)
 
-Script engine (three-act spine + hard validators + claim grounding) →
-Voice Director → Chatterbox TTS → -14 LUFS loudnorm master.
+Research → script engine → voice → footage gate → edit engine → QC/packaging →
+feedback loop. Every layer ships with an offline synthetic test suite:
+
+```bash
+python scripts/test_m1_synthetic.py         # script validators, grounding, voice, mastering QC
+python scripts/test_m2_synthetic.py         # footage gate, license ledger, Wan jobs
+python scripts/test_m3_synthetic.py         # Rule-of-Six EDL, assembly export
+python scripts/test_m4_synthetic.py         # QC gates, disclosure, upload package
+python scripts/test_m5_synthetic.py         # retention post-mortem, weight adjustment
+python scripts/test_research_synthetic.py   # case scout, contradictions, novelty gate
+```
+
+What remains is live calibration: real harvests, threshold tuning on real assets,
+the first end-to-end GPU render, and real retention data feeding M5.
 
 ## Quick start
 
@@ -55,7 +67,15 @@ Create `cases/<name>/case.json`:
 }
 ```
 
-## Roadmap
+## Pipeline entry points
 
-M2 footage layer → M3 edit engine → M4 QC/packaging → M5 feedback loop.
-See [PLAN.md](PLAN.md) Milestones.
+| Stage | Command |
+|---|---|
+| Layer 1 research | `python -m pipeline.run_research --query "..." --title "..."` |
+| M1 script + voice | `python -m pipeline.run_milestone1 --case cases/<name>/case.json` |
+| M2 footage | `python -m pipeline.run_milestone2 --run-id <run-id>` |
+| M3 edit + assembly | `python -m pipeline.run_milestone3 --run-id <run-id>` |
+| M4 QC + packaging | `python -m pipeline.run_milestone4 --run-id <run-id>` |
+| M5 feedback (~1 wk post-upload) | `python -m pipeline.run_milestone5 --run-id <run-id> --video-id <yt-id>` |
+
+See [PLAN.md](PLAN.md) for the full blueprint and milestone status.

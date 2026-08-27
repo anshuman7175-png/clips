@@ -4,3 +4,4 @@ runs/
 library/
 *.wav
 .env*
+.venv/
