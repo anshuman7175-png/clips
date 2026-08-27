@@ -180,10 +180,20 @@ sustainable fully free**, PROVIDED:
 
 1. **M1 (this repo, first) — DONE:** Script engine (three-act spine + validators + claim grounding)
    → Voice Director → Chatterbox render → loudnorm master. Tests the riskiest assumption
-   (voice quality) end to end.
+   (voice quality) end to end. Offline contract tests in `scripts/test_m1_synthetic.py`.
 2. **M2 — DONE:** Footage layer — X-CLIP/SigLIP gate, asset harvester, license ledger, Wan 2.2 branch.
    Implemented in `pipeline/footage/` (`run_milestone2.py` orchestrator; offline gate tests in
    `scripts/test_m2_synthetic.py`).
-3. **M3:** Edit engine — Rule-of-Six EDL, J/L-cut grammar, WhisperX alignment, Remotion assembly.
-4. **M4:** QC + packaging — aesthetic gates, thumbnails, disclosure, upload.
-5. **M5:** Feedback loop — Analytics API post-mortems feeding the scorers.
+3. **M3 — DONE:** Edit engine — Rule-of-Six EDL, J/L-cut grammar, WhisperX alignment, Remotion assembly.
+   Implemented in `pipeline/edit/` + `remotion/` (`run_milestone3.py`; tests in `scripts/test_m3_synthetic.py`).
+4. **M4 — DONE:** QC + packaging — aesthetic gates, thumbnails, disclosure, upload.
+   Implemented in `pipeline/qc/` + `pipeline/packaging/` (`run_milestone4.py`; tests in `scripts/test_m4_synthetic.py`).
+5. **M5 — DONE:** Feedback loop — Analytics API post-mortems feeding the scorers.
+   Implemented in `pipeline/feedback/` (`run_milestone5.py`; tests in `scripts/test_m5_synthetic.py`).
+6. **Layer 1 research — DONE:** case scout, contradiction detection, novelty gate, case file export.
+   Implemented in `pipeline/research/` (`run_research.py`; tests in `scripts/test_research_synthetic.py`).
+
+All milestones are code-complete with passing offline synthetic suites. What remains is
+**live calibration**: real primary-source harvests, model thresholds tuned on real assets
+(`STILL_MATCH_THRESHOLD` / `VIDEO_MATCH_THRESHOLD`), first end-to-end GPU render, and the
+first published video feeding M5 with real retention data.
