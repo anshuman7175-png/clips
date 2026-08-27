@@ -28,6 +28,7 @@ from .edit.edl import build_edl
 from .edit.remotion_export import export_props, write_ffmpeg_fallback
 from .edit.rule_of_six import best_edl, score_edl
 from .edit.timeline import build_timeline
+from .feedback.aggregate import load_channel_weights
 
 
 def _media_paths(manifest: dict, run_dir: Path, library_dir: Path) -> dict[str, str]:
@@ -82,9 +83,13 @@ def main() -> None:
           f"{len(timeline['pause_beats'])} editorial pauses")
 
     # 3. EDL: N jitter-seeded candidates, Rule-of-Six picks the winner.
+    #    M5's feedback loop adjusts the scorer weights channel-wide.
     seeds = list(range(cfg.edl_candidate_seeds))
+    weights = load_channel_weights(cfg.feedback_dir / "channel_state.json")
+    if weights:
+        print(f"  using channel-adjusted Rule-of-Six weights (M5 feedback): {weights}")
     def _edl() -> dict:
-        edl, report = best_edl(timeline, manifest, seeds)
+        edl, report = best_edl(timeline, manifest, seeds, weights=weights)
         edl["rule_of_six"] = report
         return edl
     edl = run.stage("m3_03_edl", _edl)

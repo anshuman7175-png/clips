@@ -53,6 +53,9 @@ class Config:
     edl_candidate_seeds: int = field(
         default_factory=lambda: int(os.getenv("EDL_CANDIDATE_SEEDS", "12")))
     align_device: str = field(default_factory=lambda: os.getenv("ALIGN_DEVICE", "cuda"))
+    # Feedback loop (PLAN.md Layer 10) - M5
+    feedback_dir: Path = field(
+        default_factory=lambda: Path(os.getenv("FEEDBACK_DIR", "feedback")))
 
 
 def load_config(workdir: str | Path = "runs") -> Config:

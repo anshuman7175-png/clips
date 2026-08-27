@@ -30,10 +30,13 @@ WEIGHTS = {"emotion": 0.51, "story": 0.23, "rhythm": 0.10,
            "eye_trace": 0.07, "plane_2d": 0.05, "space_3d": 0.04}
 
 
-def score_edl(edl: dict, timeline: dict) -> dict:
+def score_edl(edl: dict, timeline: dict, weights: dict | None = None) -> dict:
+    """Score with Murch's canonical weights, or channel-adjusted weights
+    produced by the M5 feedback loop (feedback.aggregate.adjust_weights)."""
+    w = weights or WEIGHTS
     events = edl["events"]
     if not events:
-        return {"total": 0.0, **{k: 0.0 for k in WEIGHTS}}
+        return {"total": 0.0, **{k: 0.0 for k in w}}
     beats = {b["beat_id"]: b for b in timeline["beats"]}
     components = {
         "emotion": _emotion(events, beats),
@@ -43,24 +46,26 @@ def score_edl(edl: dict, timeline: dict) -> dict:
         "plane_2d": _plane_2d(events),
         "space_3d": _space_3d(events),
     }
-    total = sum(WEIGHTS[k] * v for k, v in components.items())
+    total = sum(w[k] * v for k, v in components.items())
     return {"total": round(total, 4), **{k: round(v, 4) for k, v in components.items()}}
 
 
 def best_edl(timeline: dict, shotlist: dict, seeds: list[int],
-             similarity=None, builder=None) -> tuple[dict, dict]:
+             similarity=None, builder=None,
+             weights: dict | None = None) -> tuple[dict, dict]:
     """Build one candidate per seed, score all, return (best_edl, report)."""
     from .edl import build_edl
     builder = builder or build_edl
     candidates = []
     for seed in seeds:
         edl = builder(timeline, shotlist, seed, similarity=similarity)
-        candidates.append((score_edl(edl, timeline), edl))
+        candidates.append((score_edl(edl, timeline, weights), edl))
     candidates.sort(key=lambda c: c[0]["total"], reverse=True)
     best_score, best = candidates[0]
     report = {
         "winner_seed": best["seed"],
         "winner_score": best_score,
+        "weights": weights or WEIGHTS,
         "candidates": [{"seed": e["seed"], "total": s["total"]}
                        for s, e in candidates],
     }
