@@ -188,13 +188,17 @@ def _tags(case: dict, script: dict) -> list[str]:
     tags = ["documentary", "history", "archival footage", "true story"]
     tags += case.get("tags", [])
     # Proper-noun harvest from the script (cheap, deterministic).
+    # Mid-sentence capitals only: a capital after ". " is grammar, not a name.
     text = " ".join(b["text"] for b in script["beats"])
-    nouns = re.findall(r"\b[A-Z][a-z]{3,}\b", text)
-    seen = set(t.lower() for t in tags)
+    nouns = re.findall(r"(?<=[a-z,;:] )[A-Z][a-z]{3,}\b", text)
+    seen = {t.lower(): i for i, t in enumerate(tags)}
     for n in nouns:
-        if n.lower() not in seen:
+        key = n.lower()
+        if key in seen:
+            tags[seen[key]] = n  # upgrade casing to the proper-noun form
+        else:
+            seen[key] = len(tags)
             tags.append(n)
-            seen.add(n.lower())
     # Enforce the aggregate char budget.
     total, kept = 0, []
     for t in tags:
