@@ -43,10 +43,14 @@ def build_probe_plan(edl: dict, timeline: dict) -> dict:
     probes = []
     for e in edl["events"]:
         t = round((e["video_in"] + e["video_out"]) / 2.0, 3)
-        if e["hold"] and e["beat_id"] in reveal_beats:
-            segment = "peak"
-        elif t >= end_start:
+        if e["video_out"] > end_start:
+            # The event plays during the ending: probe INSIDE the end window
+            # (a long final event's midpoint can fall outside it, which would
+            # leave the Peak-End aggregate with no "end" signal at all).
+            t = round((max(e["video_in"], end_start) + e["video_out"]) / 2.0, 3)
             segment = "end"
+        elif e["hold"] and e["beat_id"] in reveal_beats:
+            segment = "peak"
         else:
             segment = "body"
         probes.append({"event_id": e["event_id"], "t": t, "segment": segment,

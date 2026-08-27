@@ -23,6 +23,9 @@ import statistics
 MIN_EXCESS_PER_BUCKET = 0.004
 # Total excess drop for the region to count as a real dip (audience share).
 MIN_DIP_DEPTH = 0.01
+# Window (in x-ratio) after a rewatch spike where drops are viewers returning
+# to trend, not viewers leaving - dips starting here are discarded.
+SPIKE_RECOVERY_RATIO = 0.03
 # Emotion-modulated target duration, mirrored from rule_of_six._emotion.
 _TARGET_BASE_S = 6.0
 
@@ -55,7 +58,9 @@ def find_dips(curve: list[dict], min_depth: float = MIN_DIP_DEPTH) -> list[dict]
         while j < len(excess) and excess[j] > MIN_EXCESS_PER_BUCKET / 2:
             j += 1
         depth = sum(excess[i:j])
-        if depth >= min_depth:
+        start_x = curve[i]["x"]
+        in_recovery = any(lo <= start_x <= hi for lo, hi in spike_windows)
+        if depth >= min_depth and not in_recovery:
             dips.append({
                 "start_ratio": curve[i]["x"],
                 "end_ratio": curve[min(j, len(curve) - 1)]["x"],
